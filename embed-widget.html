@@ -106,10 +106,20 @@
 
                       <p>Example of rendering a search from CKAN using the API in a JavaScript widget:</p>
 
-                      <div class="opendata-swiss" id="example-1"></div>
+                      <div class="opendata-swiss" id="embed1"></div>
 
                       <script>
-                      ck.datasets('#example-1', '/', 'RDF');
+                      var ex1;
+
+                      ck.datasets('#embed1', '/', {
+                        q:       'RDF',
+                        rows:     5,
+                        jsonp:    false
+                      }, function(error, result) {
+                        ex1 = result;
+                        if (error) console.error(error);
+                        if (result) console.info(result);
+                      });
                       </script>
 
                       <p>Note that we used NGINX to <a href="https://www.nginx.com/resources/admin-guide/reverse-proxy/">proxy requests</a></p>
