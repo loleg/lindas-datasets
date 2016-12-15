@@ -12,6 +12,7 @@
         <script src="embed-js/jquery-2.1.4.min.js"></script>
         <script src="embed-js/underscore-min.js"></script>
         <script src="embed-js/ckan.js"></script>
+        <script src="embed-js/ckan-embed.min.js"></script>
 
     <title>Opendata.swiss Embedded</title>
     <!--
@@ -104,76 +105,15 @@
                       <style>.embed-nav .btn { text-decoration: none; }</style>
 
                       <p>Example of rendering a search from CKAN using the API in a JavaScript widget:</p>
-                      <div id="embed-container"></div>
-<script>
-// For information on the CKAN Client see https://github.com/okfn/ckan.js
-// We used NGINX to proxy requests https://www.nginx.com/resources/admin-guide/reverse-proxy/
-var client = new CKAN.Client('http://opendataswiss-lindas-test.datalets.ch');
-// For details of API usage see http://docs.ckan.org/en/latest/api/
-var data = { q: 'RDF', sort: 'metadata_modified desc' };
-client.action('package_search', data, function(err, result) {
-  if (err != null) { console.log(err); return; }
-  console.log(result);
-  var datasets = result.result.results;
 
-  // Underscore template for the output of the widget
-  var template = _.template(
-    '<div class="embed-dataset">' +
-      '<a href="https://opendata.swiss/en/dataset/<%= ds.name %>">' +
-        '<h5><%= ds.title %></h5>' +
-      '</a>' +
-      '<p><%= ds.description %></p>' +
-      '<b><%= ds.groupname %></b><br>' +
-      '<small><%= ds.formats %></small>' +
-      //'<small><%= ds.modified %></small>' +
-    '</div>'
-  );
+                      <div class="opendata-swiss" id="example-1"></div>
 
-  // Helper functions to massage the results
-  var fragments = [];
-  var getLangDefault = function(n) {
-    return n.fr || n.de || n.it || n.en;
-  };
-  var getDatasetFormats = function(res) {
-    return _.uniq(_.map(res,
-        function(r) { return r.format }))
-          .join(' ');
-  }
+                      <script>
+                      ck.datasets('#example-1', '/', 'RDF');
+                      </script>
 
-  // Pass the dataset results to the template
-  for (var i in datasets) {
-    var dso = datasets[i];
-    var ds = {
-      name:          dso.name,
-      title:         getLangDefault(dso.display_name),
-      groupname:     (dso.groups.length == 0) ? '' :
-                      getLangDefault(dso.groups[0].display_name),
-      description:   getLangDefault(dso.description),
-      formats:       getDatasetFormats(dso.resources),
-      modified:      dso.metadata_modified
-    };
-    fragments.push(template({ ds: ds }));
-  }
-
-  // Insert into the container on the page
-  $('#embed-container').html(fragments.join(''));
-});
-</script>
-<style>
-/* A bit of formatting for the embedded results */
-.embed-dataset {
-  border-bottom: 1px solid black;
-  padding: 10px 0px;
-}
-.embed-dataset h5 {
-  font-weight: bold;
-  font-size: 150%;
-  color: #009688;
-}
-</style>
-                      <!-- <p>Example of a Twitter widget using embedded JavaScript:</p>
-                      <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Hate crime on the rise. We created an <a href="https://twitter.com/hashtag/opendata?src=hash">#opendata</a> workspace w <a href="https://twitter.com/ADL_National">@ADL_National</a> to analyze this dark trend. Will you help? <a href="https://t.co/Uyyp3sE1ij">https://t.co/Uyyp3sE1ij</a> <a href="https://t.co/cpLnxRDBVk">pic.twitter.com/cpLnxRDBVk</a></p>&mdash; datadotworld (@datadotworld) <a href="https://twitter.com/datadotworld/status/799365181742743552">November 17, 2016</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script> -->
+                      <p>Note that we used NGINX to <a href="https://www.nginx.com/resources/admin-guide/reverse-proxy/">proxy requests</a></p>
+                      <p>For more information on this widget see <a href="https://github.com/Datalets/ckan-embed">Datalets/ckan-embed</a></p>
 
                     </div>
 
