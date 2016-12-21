@@ -12,7 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <script src="https://cdn.rawgit.com/okfn/ckan.js/master/ckan.js"></script>
-    <script src="https://cdn.rawgit.com/opendata-swiss/ckan-embed/master/dist/ckan-embed.min.js"></script>
+    <script src="https://rawgit.com/opendata-swiss/ckan-embed/master/dist/ckan-embed.min.js"></script>
 
     <title>Opendata.swiss Embedded</title>
 </head>
@@ -85,10 +85,10 @@
 <p>The following Linked Data have been published on
   <a href="http://opendata.swiss" target="_blank">opendata.swiss</a>,
   the official Open Data portal of the Confederation.
-</p><p>
   See the
   <a href="http://handbook.opendata.swiss/en/library/embed.html">Handbook library</a>
-  for background and technical details about the embedding widget used here.</p>
+  for background and technical details about the embedding widget used here. Note that we recommend <a href="https://www.nginx.com/resources/admin-guide/reverse-proxy/">proxying requests</a> to the API and disabling JSONP support.
+</p>
 
   <div class="opendata-swiss" id="embed1"></div>
 
@@ -96,8 +96,9 @@
   ck.datasets('#embed1', 'https://opendata.swiss/', {
     q:       'RDF',
     rows:     5,
-    proxy:   '/',
-    jsonp:    false
+    lang:     'fr',
+    //proxy:   '/', jsonp: false
+    jsonp:    true,
   }, function(error, result) {
     if (error) console.error(error);
   });
@@ -125,9 +126,6 @@
     background-image: url('https://opendata.swiss/content/themes/wp-ogdch-theme/assets/images/logo_horizontal.svg');
   }
   </style>
-
-  <p>Note that we used NGINX to <a href="https://www.nginx.com/resources/admin-guide/reverse-proxy/">proxy requests</a></p>
-  <p>For more information on this widget see <a href="https://github.com/Datalets/ckan-embed">Datalets/ckan-embed</a></p>
 
                 </div>
             </div>
